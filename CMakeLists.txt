@@ -24,11 +24,12 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/cutlass/tools/util/include)
 
 
 set(BUILD_TEST "ON")
-set(CUDA_TEST "ON")
+set(CUDA_TEST "OFF")
 
 if(BUILD_TEST)
   message("BUILD_TEST")
-
+  add_executable (test_engine "test/test_engine.cpp" )
+  target_link_libraries( test_engine  )
 
 else()
   message("Welcome !!!")
