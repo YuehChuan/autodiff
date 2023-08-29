@@ -22,6 +22,11 @@ link_directories(${PROJECT_SOURCE_DIR}/lib/cuda-12.2-lib/x64/)
 include_directories(${PROJECT_SOURCE_DIR}/lib/cutlass/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/cutlass/tools/util/include)
 
+#eigen-tensor
+include_directories(${PROJECT_SOURCE_DIR}/include/eigen-3.4.0/)
+
+
+add_library( engine  "src/engine.cpp" )
 
 set(BUILD_TEST "ON")
 set(CUDA_TEST "OFF")
@@ -30,6 +35,17 @@ if(BUILD_TEST)
   message("BUILD_TEST")
   add_executable (test_engine "test/test_engine.cpp" )
   target_link_libraries( test_engine  )
+
+  add_executable (test_catch "test/test_catch.cpp" )
+  target_link_libraries( test_catch engine )
+
+
+  add_executable (test_eigen_backward "test/test_eigen_backward.cpp" )
+  target_link_libraries( test_eigen_backward  )
+
+  add_executable (templateADScalar "test/templateADScalar.cpp" )
+  target_link_libraries( templateADScalar  )
+  
 
 else()
   message("Welcome !!!")
@@ -46,7 +62,7 @@ else()
   message("CUDA!!!")
 endif()
 
-add_executable (main "main.cpp" )
+add_executable (main "main.cpp" "src/Tensor.cpp" )
 target_link_libraries( main  )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
